@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Slot, useRouter, useSegments } from 'expo-router'
-import { supabase } from '@/lib/supabase.ts'
+import { supabase } from '@/lib/supabase'
 import { Session } from '@supabase/supabase-js'
+import { View, ActivityIndicator } from 'react-native'
 
 export default function RootLayout() {
   const [session, setSession] = useState<Session | null>(null)
@@ -33,6 +34,14 @@ export default function RootLayout() {
       router.replace('/(app)/feed')
     }
   }, [session, loading, segments])
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
 
   return <Slot />
 }
